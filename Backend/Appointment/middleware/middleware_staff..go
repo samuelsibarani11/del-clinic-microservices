@@ -1,8 +1,8 @@
 package middleware
 
 import (
+	"appointment/utils"
 	"github.com/gofiber/fiber/v2"
-	"github.com/khensin166/PA2-Kel9/utils"
 	"log"
 )
 
