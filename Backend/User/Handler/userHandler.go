@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"user/database"
 	"user/models/entity"
 	"user/utils"
@@ -17,8 +18,17 @@ import (
 
 var PathImageProduct = "./Public"
 
+func init() {
+	if _, err := os.Stat(PathImageProduct); os.IsNotExist(err) {
+		err := os.Mkdir(PathImageProduct, os.ModePerm)
+		if err != nil {
+			return
+		}
+	}
+}
+
 func getDormByID(categoryID int) (*dorm.Dorm, error) {
-	resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:8002/category/%d", categoryID))
+	resp, err := http.Get(fmt.Sprintf("http://172.20.10.4:8001/dorm/%d", categoryID))
 	if err != nil {
 		return nil, fmt.Errorf("failed to make HTTP request: %v", err)
 	}
@@ -34,15 +44,6 @@ func getDormByID(categoryID int) (*dorm.Dorm, error) {
 	}
 
 	return &category, nil
-}
-
-func init() {
-	if _, err := os.Stat(PathImageProduct); os.IsNotExist(err) {
-		err := os.Mkdir(PathImageProduct, os.ModePerm)
-		if err != nil {
-			return
-		}
-	}
 }
 
 func UserHandlerGetAll(ctx *fiber.Ctx) error {
@@ -68,7 +69,7 @@ func CreateUser(ctx *fiber.Ctx) error {
 	// Parse form data
 	user := new(entity.User)
 
-	// Menangani error saat parsing request body
+	// Handle error when parsing request body
 	if err := ctx.BodyParser(user); err != nil {
 		return ctx.Status(400).JSON(fiber.Map{
 			"status":  "failed",
@@ -76,30 +77,33 @@ func CreateUser(ctx *fiber.Ctx) error {
 		})
 	}
 
-	//VALIDATION REQUEST
+	// Validation request
 	validate := validator.New()
 	err := validate.Struct(user)
-
 	if err != nil {
 		return ctx.Status(400).JSON(fiber.Map{
-			"message": "failed",
-			"error":   err.Error(),
+			"status":  "failed",
+			"message": err.Error(),
 		})
 	}
 
-	// pemanggilan hashed password
+	// Parse dorm ID from the user data
+	dormId := user.DormID
+
+	// Hash the password
 	hashedPassword, err := utils.HashingPassword(user.Password)
 	if err != nil {
 		log.Println(err)
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "internal server error",
+			"status":  "failed",
+			"message": "Internal server error",
 		})
 	}
-	// passing password yang sudah di hasing ke entity user (JSON)
+	// Assign hashed password to user
 	user.Password = hashedPassword
 
+	// Handle profile picture upload
 	image, err := ctx.FormFile("profilePicture")
-
 	if err == nil {
 		filename := utils.GenerateImageFile(user.Name, image.Filename)
 		if err := ctx.SaveFile(image, filepath.Join(PathImageProduct, filename)); err != nil {
@@ -113,24 +117,50 @@ func CreateUser(ctx *fiber.Ctx) error {
 		user.ProfilePicture = nil
 	}
 
-	// Mencoba membuat entitas baru dan menangani errornya
-	if err := database.DB.Create(&user).Error; err != nil {
-		// Mengembalikan respon error 500 dengan pesan yang sesuai
+	// Retrieve dorm by ID
+	dormm, err := getDormByID(int(dormId))
+	if err != nil {
+		return ctx.Status(400).JSON(fiber.Map{
+			"status":  "failed",
+			"message": err.Error(),
+		})
+	}
+	dormm.ID = uint(dormId)
+
+	userData := entity.User{
+		Name:           user.Name,
+		Address:        user.Address,
+		Weight:         user.Weight,
+		Height:         user.Height,
+		Role:           user.Role,
+		Gender:         user.Gender,
+		Phone:          user.Phone,
+		ProfilePicture: user.ProfilePicture,
+		Birthday:       user.Birthday,
+		NIK:            user.NIK,
+		Age:            user.Age,
+		Username:       user.Username,
+		Password:       user.Password,
+		DormID:         dormm.ID,
+	}
+
+	// Create new entity and handle error
+	if err := database.DB.Create(&userData).Error; err != nil {
 		return ctx.Status(500).JSON(fiber.Map{
-			"message": "failed to store data",
-			"error":   err.Error(), // Menambahkan pesan error ke respon JSON
+			"status":  "failed",
+			"message": "Failed to store data",
+			"error":   err.Error(),
 		})
 	}
 
-	// Mengembalikan respon sukses dengan data baru yang telah dibuat
+	// Return success response with new data
 	return ctx.Status(200).JSON(fiber.Map{
-		"message": "success",
-		"data":    user,
+		"status": "success",
+		"data":   userData,
 	})
 }
 
 func UserHandlerGetById(ctx *fiber.Ctx) error {
-
 	// mencari user parameter id.
 	userId := ctx.Params("id")
 
@@ -192,6 +222,26 @@ func UpdateUser(ctx *fiber.Ctx) error {
 			})
 		}
 		user.ProfilePicture = &filename
+	}
+
+	dormId, err := strconv.Atoi(ctx.FormValue("dormID"))
+	if err != nil {
+		return ctx.Status(400).JSON(fiber.Map{
+			"status":  "failed",
+			"message": err.Error(),
+		})
+	}
+
+	if dormId != 0 {
+		dorm, err := getDormByID(dormId)
+		if err != nil {
+			return ctx.Status(400).JSON(fiber.Map{
+				"status":  "failed",
+				"message": err.Error(),
+			})
+		}
+		dorm.ID = uint(dormId)
+		user.DormID = uint(dormId)
 	}
 
 	validate := validator.New()

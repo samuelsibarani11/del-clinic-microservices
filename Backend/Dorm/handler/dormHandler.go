@@ -7,6 +7,27 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func DormGetById(ctx *fiber.Ctx) error {
+	// mencari user parameter id.
+	dormId := ctx.Params("id")
+
+	// mendeklarasikan variabel user dengan tipe data userEntity
+	var dorm entity.Dorm
+
+	// Query Statement dengan GORM
+	err := database.DB.First(&dorm, "?", dormId).Error
+	if err != nil {
+		return ctx.Status(404).JSON(fiber.Map{
+			"message": "user not found",
+		})
+	}
+
+	return ctx.JSON(fiber.Map{
+		"message": "success",
+		"data":    dorm,
+	})
+}
+
 func DormGetAll(ctx *fiber.Ctx) error {
 	var dorms []entity.Dorm
 

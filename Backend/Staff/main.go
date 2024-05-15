@@ -23,7 +23,7 @@ func main() {
 
 	routes.RouteInit(app)
 
-	err := app.Listen("172.20.10.4:8080")
+	err := app.Listen("172.20.10.4:8004")
 
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
