@@ -3,9 +3,10 @@ package handler
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/khensin166/PA2-Kel9/database"
-	"github.com/khensin166/PA2-Kel9/model/entity"
-	"github.com/khensin166/PA2-Kel9/utils"
+	"medicalHistory/database"
+	"medicalHistory/model/entity"
+	"medicalHistory/utils"
+
 	"log"
 )
 

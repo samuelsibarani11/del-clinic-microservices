@@ -75,32 +75,32 @@ func CreateDoctorReport(ctx *fiber.Ctx) error {
 	}
 
 	// Update Medicine stock
-	for _, medicine := range doctorReport.Medicines {
-		var dbMedicine entity.Medicine
-		if err := database.DB.First(&dbMedicine, medicine.ID).Error; err != nil {
-			return ctx.Status(400).SendString("Obat tidak ditemukan")
-		}
-
-		if dbMedicine.Amount < medicine.Amount {
-			return ctx.Status(400).SendString("Stok obat tidak cukup")
-		}
-
-		dbMedicine.Amount -= medicine.Amount
-		if err := database.DB.Save(&dbMedicine).Error; err != nil {
-			return ctx.Status(500).JSON(fiber.Map{
-				"message": "failed to update medicine stock",
-				"error":   err.Error(),
-			})
-		}
-
-		// Assign medicine to the current doctor report
-		if err := database.DB.Model(&doctorReport).Association("Medicines").Append(&dbMedicine); err != nil {
-			return ctx.Status(500).JSON(fiber.Map{
-				"message": "failed to associate medicine with doctor report",
-				"error":   err.Error(),
-			})
-		}
-	}
+	//for _, medicine := range doctorReport.Medicines {
+	//	var dbMedicine entity.Medicine
+	//	if err := database.DB.First(&dbMedicine, medicine.ID).Error; err != nil {
+	//		return ctx.Status(400).SendString("Obat tidak ditemukan")
+	//	}
+	//
+	//	if dbMedicine.Amount < medicine.Amount {
+	//		return ctx.Status(400).SendString("Stok obat tidak cukup")
+	//	}
+	//
+	//	dbMedicine.Amount -= medicine.Amount
+	//	if err := database.DB.Save(&dbMedicine).Error; err != nil {
+	//		return ctx.Status(500).JSON(fiber.Map{
+	//			"message": "failed to update medicine stock",
+	//			"error":   err.Error(),
+	//		})
+	//	}
+	//
+	//	// Assign medicine to the current doctor report
+	//	if err := database.DB.Model(&doctorReport).Association("Medicines").Append(&dbMedicine); err != nil {
+	//		return ctx.Status(500).JSON(fiber.Map{
+	//			"message": "failed to associate medicine with doctor report",
+	//			"error":   err.Error(),
+	//		})
+	//	}
+	//}
 
 	// Load relations
 	if err := database.DB.Preload("NurseReport").Preload("StaffDoctor").Preload("Medicines").First(&doctorReport, doctorReport.ID).Error; err != nil {
