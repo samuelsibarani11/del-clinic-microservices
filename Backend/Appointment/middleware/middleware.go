@@ -8,8 +8,7 @@ import (
 var ActiveTokens = make(map[string]bool)
 
 func Auth(ctx *fiber.Ctx) error {
-
-	// Menerima token dari header Authorization
+	// membuat token
 	token := ctx.Get("Authorization")
 	if token == "" {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -17,7 +16,7 @@ func Auth(ctx *fiber.Ctx) error {
 		})
 	}
 
-	// Mendekode token untuk mendapatkan klaim
+	//_, err := utils.VerifyToken(token)
 	claims, err := utils.DecodeToken(token)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -25,14 +24,6 @@ func Auth(ctx *fiber.Ctx) error {
 		})
 	}
 
-	// Memeriksa apakah token ada dalam daftar token aktif
-	if _, ok := ActiveTokens[token]; !ok {
-		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "unauthenticated",
-		})
-	}
-
-	// Menyimpan informasi pengguna ke dalam konteks lokal
 	ctx.Locals("staffInfo", claims)
 
 	return ctx.Next()
