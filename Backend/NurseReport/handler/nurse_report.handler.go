@@ -1,13 +1,69 @@
 package handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"log"
+	"net/http"
 	"nurseReport/database"
 	"nurseReport/model/entity"
 	"nurseReport/utils"
+	usr "service/user/Models/entity"
+	staff "staff/models/entity"
 )
+
+func NurseReportGetById(ctx *fiber.Ctx) error {
+	// mencari user parameter id.
+	nurseReportId := ctx.Params("id")
+
+	// mendeklarasikan variabel user dengan tipe data userEntity
+	var nurseReport entity.NurseReport
+
+	// Query Statement dengan GORM
+	err := database.DB.First(&nurseReport, "?", nurseReportId).Error
+	if err != nil {
+		return ctx.Status(404).JSON(fiber.Map{
+			"message": "staff not found",
+		})
+	}
+
+	return ctx.JSON(fiber.Map{
+		"message": "success",
+		"data":    nurseReport,
+	})
+}
+
+func getStaffByID(staffID int) (*staff.Staff, error) {
+	resp, err := http.Get(fmt.Sprintf("http://172.20.10.4:8004/staff/%d", staffID))
+	if err != nil {
+		return nil, fmt.Errorf("failed to make HTTP request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	var staffs staff.Staff
+	if err := json.NewDecoder(resp.Body).Decode(&staffs); err != nil {
+		return nil, fmt.Errorf("failed to decode JSON response: %v", err)
+	}
+
+	return &staffs, nil
+}
+
+func getUserByID(staffID int) (*usr.User, error) {
+	resp, err := http.Get(fmt.Sprintf("http://172.20.10.4:8004/staff/%d", staffID))
+	if err != nil {
+		return nil, fmt.Errorf("failed to make HTTP request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	var users usr.User
+	if err := json.NewDecoder(resp.Body).Decode(&users); err != nil {
+		return nil, fmt.Errorf("failed to decode JSON response: %v", err)
+	}
+
+	return &users, nil
+}
 
 func NurseReportGetAll(ctx *fiber.Ctx) error {
 	var nurseReport []entity.NurseReportResponse
@@ -21,20 +77,22 @@ func CreateNurseReport(ctx *fiber.Ctx) error {
 	nurseReport := &entity.NurseReport{}
 
 	if err := ctx.BodyParser(nurseReport); err != nil {
-		return err
+		return ctx.Status(400).JSON(fiber.Map{
+			"message": "failed to parse request body",
+			"error":   err.Error(),
+		})
 	}
 
 	// VALIDATION Request
 	validate := validator.New()
 	if err := validate.Struct(nurseReport); err != nil {
 		return ctx.Status(400).JSON(fiber.Map{
-			"message": "failed",
+			"message": "validation failed",
 			"error":   err.Error(),
 		})
 	}
 
-	//VALIDATION
-	// membuat token
+	// Validate Authorization Token
 	token := ctx.Get("Authorization")
 	if token == "" {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -42,18 +100,16 @@ func CreateNurseReport(ctx *fiber.Ctx) error {
 		})
 	}
 
-	//_, err := utils.VerifyToken(token)
 	claims, err := utils.DecodeToken(token)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "unauthenticated err",
+			"message": "unauthenticated",
+			"error":   err.Error(),
 		})
 	}
 
-	//ctx.Locals("userInfo", claims)
 	role := claims["role"].(float64)
-
-	log.Println(role)
+	log.Println("Role:", role)
 
 	if role == 2 {
 		return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{
@@ -62,10 +118,9 @@ func CreateNurseReport(ctx *fiber.Ctx) error {
 	}
 
 	if err := database.DB.Create(nurseReport).Error; err != nil {
-		// Mengembalikan respon error 500 dengan pesan yang sesuai
 		return ctx.Status(500).JSON(fiber.Map{
 			"message": "failed to store data",
-			"error":   err.Error(), // Menambahkan pesan error ke respon JSON
+			"error":   err.Error(),
 		})
 	}
 
@@ -84,11 +139,11 @@ func CreateNurseReport(ctx *fiber.Ctx) error {
 		StaffNurseID:           nurseReport.StaffNurseID,
 		PatientID:              nurseReport.PatientID,
 	}
+
 	return ctx.Status(200).JSON(fiber.Map{
-		"message":      "create data successfully",
+		"message":      "created data successfully",
 		"nurse_report": response,
 	})
-
 }
 
 func UpdateNurseReport(ctx *fiber.Ctx) error {

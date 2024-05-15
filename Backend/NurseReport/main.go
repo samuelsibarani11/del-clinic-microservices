@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"log"
 	"nurseReport/database"
 	"nurseReport/database/migration"
 	"nurseReport/route"
@@ -9,17 +11,23 @@ import (
 
 func main() {
 
-	// INITIAL DATABASE
 	database.DatabaseInit()
-
-	// RUN MIGRATION
 	migration.Migration()
+	// seeders.SeederData()
 
-	// menginisialisasikan go fiber (di passing ke route)
 	app := fiber.New()
 
-	// INITIAL ROUTE
+	app.Use(cors.New(cors.Config{
+		AllowCredentials: true,
+		AllowOrigins:     "https://gofiber.io",
+	}))
+
 	route.RouteInit(app)
 
-	app.Listen(":8080")
+	err := app.Listen("172.20.10.4:8006")
+
+	if err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
+
 }

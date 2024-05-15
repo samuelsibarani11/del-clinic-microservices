@@ -11,6 +11,7 @@ type DoctorReport struct {
 	StaffDoctorID uint           `json:"staff_doctor_id"`
 	Disease       string         `json:"disease"`
 	Amount        int            `json:"amount"`
+	MedicineID    int            `json:"medicine_id"`
 	CreatedAt     time.Time      `json:"created_at"`
 	UpdatedAt     time.Time      `json:"updated_at"`
 	DeletedAt     gorm.DeletedAt `json:"-" gorm:"index,column:deleted_at"`

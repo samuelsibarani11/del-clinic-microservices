@@ -8,6 +8,7 @@ import (
 
 func RouteInit(r *fiber.App) {
 	// APPOINTMENT
+	r.Get("/appointment/:id", middleware.Auth, handler.AppointmentGetById)
 	r.Get("/appointments", handler.AppointmentGetAll)
 	r.Get("/appointments-auth", middleware.Auth, handler.AppointmentGetByAuth)
 	r.Post("/appointment", middleware.StaffAuth, handler.CreateAppointment)

@@ -4,13 +4,41 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df6452e8-6367-49b9-973f-a5cfe79434eb" name="Changes" comment="test" />
+    <list default="true" id="df6452e8-6367-49b9-973f-a5cfe79434eb" name="Changes" comment="test">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_15_2024_11_17_AM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_15_2024_11_17_AM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_15_2024_11_19_AM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_15_2024_11_19_AM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_15_2024_3_58_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_15_2024_3_58_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Appointment/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Appointment/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Appointment/handler/appointment.handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Appointment/handler/appointment.handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Appointment/route/index.route.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Appointment/route/index.route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/DoctorReport/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/DoctorReport/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/DoctorReport/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/DoctorReport/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/DoctorReport/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/DoctorReport/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/DoctorReport/model/entity/doctor_report.entity.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/DoctorReport/model/entity/doctor_report.entity.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Dorm/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Dorm/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/MedicalHistory/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/MedicalHistory/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Medicine/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Medicine/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/NurseReport/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/NurseReport/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/NurseReport/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/NurseReport/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/NurseReport/handler/nurse_report.handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/NurseReport/handler/nurse_report.handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/NurseReport/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/NurseReport/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/NurseReport/model/request/auth.request.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/NurseReport/response/response.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/NurseReport/response/response.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/NurseReport/route/index.route.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/NurseReport/route/index.route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Reminder/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Reminder/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Staff/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Staff/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Staff/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Staff/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Staff/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Staff/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/User/Routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/User/Routes/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/User/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/User/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://C:/Program Files/Go" />
+  <component name="GOROOT" url="file://$USER_HOME$/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.21.6.windows-amd64" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -21,6 +49,9 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2gUJvUtNubpzr0d6gqA52mRm6i2" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -34,9 +65,10 @@
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "D:/Kuliah/Pengembangan Aplikasi Terdistribusi/Proyek/del-clinic-microservices/Backend",
+    "last_opened_file_path": "C:/Users/ASUS",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"
@@ -61,7 +93,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-gosdk-e58f7cfedaf7-155fe4b6e3a0-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.14015.113" />
+        <option value="bundled-gosdk-266795519c66-911b893a1778-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.13135.104" />
       </set>
     </attachedChunks>
   </component>

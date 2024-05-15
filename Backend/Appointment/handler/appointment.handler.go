@@ -58,6 +58,27 @@ func getUserByID(userID int) (*usr.User, error) {
 	return &user, nil
 }
 
+func AppointmentGetById(ctx *fiber.Ctx) error {
+	// mencari user parameter id.
+	appointmentId := ctx.Params("id")
+
+	// mendeklarasikan variabel user dengan tipe data userEntity
+	var appointment entity.Appointment
+
+	// Query Statement dengan GORM
+	err := database.DB.First(&appointment, "?", appointmentId).Error
+	if err != nil {
+		return ctx.Status(404).JSON(fiber.Map{
+			"message": "user not found",
+		})
+	}
+
+	return ctx.JSON(fiber.Map{
+		"message": "success",
+		"data":    appointment,
+	})
+}
+
 func CreateAppointment(ctx *fiber.Ctx) error {
 	appointment := new(entity.AppointmentResponse)
 
