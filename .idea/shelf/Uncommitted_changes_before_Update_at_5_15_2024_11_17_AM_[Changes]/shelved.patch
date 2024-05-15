@@ -1,0 +1,59 @@
+Index: Backend/Appointment/main.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package main\r\n\r\nimport (\r\n\t\"appointment/database\"\r\n\t\"appointment/database/migration\"\r\n\t\"appointment/route\"\r\n\t\"github.com/gofiber/fiber/v2\"\r\n)\r\n\r\nfunc main() {\r\n\r\n\t//INITIAL DATABASE\r\n\tdatabase.DatabaseInit()\r\n\r\n\t// RUN MIGRATION\r\n\tmigration.Migration()\r\n\r\n\t// menginisialisasikan go fiber (di passing ke route)\r\n\tapp := fiber.New()\r\n\r\n\t// INITIAL ROUTE\r\n\troute.RouteInit(app)\r\n\r\n\tapp.Listen(\":8080\")\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Appointment/main.go b/Backend/Appointment/main.go
+--- a/Backend/Appointment/main.go	(revision f580cbff40f79a54e2f4cd3fc285c0f2c33e98ac)
++++ b/Backend/Appointment/main.go	(date 1715746628360)
+@@ -1,25 +1,25 @@
+ package main
+ 
+-import (
+-	"appointment/database"
+-	"appointment/database/migration"
+-	"appointment/route"
+-	"github.com/gofiber/fiber/v2"
+-)
+-
+-func main() {
+-
+-	//INITIAL DATABASE
+-	database.DatabaseInit()
+-
+-	// RUN MIGRATION
+-	migration.Migration()
+-
+-	// menginisialisasikan go fiber (di passing ke route)
+-	app := fiber.New()
+-
+-	// INITIAL ROUTE
+-	route.RouteInit(app)
+-
+-	app.Listen(":8080")
+-}
++//import (
++//	"appointment/database"
++//	"appointment/database/migration"
++//	"appointment/route"
++//	"github.com/gofiber/fiber/v2"
++//)
++//
++//func main() {
++//
++//	//INITIAL DATABASE
++//	database.DatabaseInit()
++//
++//	// RUN MIGRATION
++//	migration.Migration()
++//
++//	// menginisialisasikan go fiber (di passing ke route)
++//	app := fiber.New()
++//
++//	// INITIAL ROUTE
++//	route.RouteInit(app)
++//
++//	app.Listen(":8080")
++//}

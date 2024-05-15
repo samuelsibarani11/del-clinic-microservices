@@ -1,0 +1,756 @@
+Index: Backend/Medicine/model/request/auth.request.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/model/request/auth.request.go b/Backend/Medicine/model/request/auth.request.go
+new file mode 100644
+--- /dev/null	(date 1713758114952)
++++ b/Backend/Medicine/model/request/auth.request.go	(date 1713758114952)
+@@ -0,0 +1,6 @@
++package request
++
++type LoginRequest struct {
++	Username string `json:"username" validate:"required"`
++	Password string `json:"password" validate:"required"`
++}
+Index: Backend/Medicine/config/index.config.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/config/index.config.go b/Backend/Medicine/config/index.config.go
+new file mode 100644
+--- /dev/null	(date 1713758114929)
++++ b/Backend/Medicine/config/index.config.go	(date 1713758114929)
+@@ -0,0 +1,14 @@
++package config
++
++import (
++	"path/filepath"
++	"runtime"
++)
++
++var (
++	// Get current file full path from runtime
++	_, b, _, _ = runtime.Caller(0)
++
++	// Root folder of this project
++	ProjectRootPath = filepath.Join(filepath.Dir(b), "../")
++)
+Index: Backend/Medicine/response/response.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/response/response.go b/Backend/Medicine/response/response.go
+new file mode 100644
+--- /dev/null	(date 1713758114953)
++++ b/Backend/Medicine/response/response.go	(date 1713758114953)
+@@ -0,0 +1,23 @@
++package response
++
++import (
++	"gorm.io/gorm"
++	"time"
++)
++
++type UserResponse struct {
++	ID        uint           `json:"id" gorm:"primaryKey"`
++	Name      string         `json:"name"`
++	Age       int            `json:"age"`
++	Weight    int            `json:"weight"`
++	Height    int            `json:"height"`
++	NIK       int            `json:"nik"`
++	Birthday  string         `json:"birthday"`
++	Gender    string         `json:"gender"`
++	Address   string         `json:"address"`
++	Phone     string         `json:"phone"`
++	Username  string         `json:"username"`
++	CreatedAt time.Time      `json:"created_at"`
++	UpdatedAt time.Time      `json:"updated_at"`
++	DeletedAt gorm.DeletedAt `json:"deleted_at"`
++}
+Index: Backend/Medicine/database/migration/migration.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/database/migration/migration.go b/Backend/Medicine/database/migration/migration.go
+new file mode 100644
+--- /dev/null	(date 1715762405207)
++++ b/Backend/Medicine/database/migration/migration.go	(date 1715762405207)
+@@ -0,0 +1,20 @@
++package migration
++
++import (
++	"fmt"
++	"log"
++	"medicine/database"
++	"medicine/model/entity"
++)
++
++func Migration() {
++	//database.DB merupakan variable yang di assign di database.go
++	err := database.DB.AutoMigrate(
++		&entity.Medicine{},
++	)
++
++	if err != nil {
++		log.Println(err)
++	}
++	fmt.Println("Database Migrated")
++}
+Index: Backend/Medicine/go.mod
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>module medicine\r\n\r\ngo 1.21.5\r\n\r\nrequire (\r\n\tfilippo.io/edwards25519 v1.1.0 // indirect\r\n\tgithub.com/andybalholm/brotli v1.0.5 // indirect\r\n\tgithub.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect\r\n\tgithub.com/gabriel-vasile/mimetype v1.4.3 // indirect\r\n\tgithub.com/go-playground/locales v0.14.1 // indirect\r\n\tgithub.com/go-playground/universal-translator v0.18.1 // indirect\r\n\tgithub.com/go-playground/validator/v10 v10.20.0 // indirect\r\n\tgithub.com/go-sql-driver/mysql v1.8.1 // indirect\r\n\tgithub.com/gofiber/fiber/v2 v2.52.4 // indirect\r\n\tgithub.com/google/uuid v1.5.0 // indirect\r\n\tgithub.com/jinzhu/inflection v1.0.0 // indirect\r\n\tgithub.com/jinzhu/now v1.1.5 // indirect\r\n\tgithub.com/klauspost/compress v1.17.0 // indirect\r\n\tgithub.com/leodido/go-urn v1.4.0 // indirect\r\n\tgithub.com/mattn/go-colorable v0.1.13 // indirect\r\n\tgithub.com/mattn/go-isatty v0.0.20 // indirect\r\n\tgithub.com/mattn/go-runewidth v0.0.15 // indirect\r\n\tgithub.com/rivo/uniseg v0.2.0 // indirect\r\n\tgithub.com/valyala/bytebufferpool v1.0.0 // indirect\r\n\tgithub.com/valyala/fasthttp v1.51.0 // indirect\r\n\tgithub.com/valyala/tcplisten v1.0.0 // indirect\r\n\tgolang.org/x/crypto v0.19.0 // indirect\r\n\tgolang.org/x/net v0.21.0 // indirect\r\n\tgolang.org/x/sys v0.17.0 // indirect\r\n\tgolang.org/x/text v0.14.0 // indirect\r\n\tgorm.io/driver/mysql v1.5.6 // indirect\r\n\tgorm.io/gorm v1.25.10 // indirect\r\n)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/go.mod b/Backend/Medicine/go.mod
+--- a/Backend/Medicine/go.mod	(revision 97d8dc84af97c2cb40044912cde33c7fe5be2f0e)
++++ b/Backend/Medicine/go.mod	(date 1715762708556)
+@@ -2,16 +2,22 @@
+ 
+ go 1.21.5
+ 
++require (
++	github.com/dgrijalva/jwt-go v3.2.0+incompatible
++	github.com/go-playground/validator/v10 v10.20.0
++	github.com/gofiber/fiber/v2 v2.52.4
++	golang.org/x/crypto v0.19.0
++	gorm.io/driver/mysql v1.5.6
++	gorm.io/gorm v1.25.10
++)
++
+ require (
+ 	filippo.io/edwards25519 v1.1.0 // indirect
+ 	github.com/andybalholm/brotli v1.0.5 // indirect
+-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+ 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
+ 	github.com/go-playground/locales v0.14.1 // indirect
+ 	github.com/go-playground/universal-translator v0.18.1 // indirect
+-	github.com/go-playground/validator/v10 v10.20.0 // indirect
+ 	github.com/go-sql-driver/mysql v1.8.1 // indirect
+-	github.com/gofiber/fiber/v2 v2.52.4 // indirect
+ 	github.com/google/uuid v1.5.0 // indirect
+ 	github.com/jinzhu/inflection v1.0.0 // indirect
+ 	github.com/jinzhu/now v1.1.5 // indirect
+@@ -24,10 +30,7 @@
+ 	github.com/valyala/bytebufferpool v1.0.0 // indirect
+ 	github.com/valyala/fasthttp v1.51.0 // indirect
+ 	github.com/valyala/tcplisten v1.0.0 // indirect
+-	golang.org/x/crypto v0.19.0 // indirect
+ 	golang.org/x/net v0.21.0 // indirect
+ 	golang.org/x/sys v0.17.0 // indirect
+ 	golang.org/x/text v0.14.0 // indirect
+-	gorm.io/driver/mysql v1.5.6 // indirect
+-	gorm.io/gorm v1.25.10 // indirect
+ )
+Index: Backend/Medicine/route/index.route.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/route/index.route.go b/Backend/Medicine/route/index.route.go
+new file mode 100644
+--- /dev/null	(date 1715762405212)
++++ b/Backend/Medicine/route/index.route.go	(date 1715762405212)
+@@ -0,0 +1,17 @@
++package route
++
++import (
++	"github.com/gofiber/fiber/v2"
++	"medicine/handler"
++	"medicine/middleware"
++)
++
++func RouteInit(r *fiber.App) {
++
++	// MEDICINE
++	r.Get("/medicines", middleware.StaffAuth, handler.MedicineGetAll)
++	r.Post("/medicine", middleware.StaffAuth, handler.CreateMedicine)
++	r.Put("/medicine/:id", middleware.StaffAuth, handler.UpdateMedicine)
++	r.Delete("/medicine/:id", middleware.StaffAuth, handler.DeleteMedicine)
++
++}
+Index: Backend/Medicine/database/database.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/database/database.go b/Backend/Medicine/database/database.go
+new file mode 100644
+--- /dev/null	(date 1715762405201)
++++ b/Backend/Medicine/database/database.go	(date 1715762405201)
+@@ -0,0 +1,22 @@
++package database
++
++import (
++	"fmt"
++	"gorm.io/driver/mysql"
++	"gorm.io/gorm"
++)
++
++var DB *gorm.DB
++
++func DatabaseInit() {
++	var err error
++	const MYSQL = "root:@tcp(127.0.0.1:3306)/clinic_medicine?charset=utf8mb4&parseTime=True&loc=Local"
++	dsn := MYSQL
++	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
++
++	if err != nil {
++		panic("Cannot connect to database")
++	}
++	fmt.Println("Connected to database")
++
++}
+Index: Backend/Medicine/main.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Appointment\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/main.go b/Backend/Medicine/main.go
+--- a/Backend/Medicine/main.go	(revision 97d8dc84af97c2cb40044912cde33c7fe5be2f0e)
++++ b/Backend/Medicine/main.go	(date 1715762679275)
+@@ -1,1 +1,25 @@
+-package Appointment
++package main
++
++import (
++	"github.com/gofiber/fiber/v2"
++	"medicine/database"
++	"medicine/database/migration"
++	"medicine/route"
++)
++
++func main() {
++
++	// INITIAL DATABASE
++	database.DatabaseInit()
++
++	// RUN MIGRATION
++	migration.Migration()
++
++	// menginisialisasikan go fiber (di passing ke route)
++	app := fiber.New()
++
++	// INITIAL ROUTE
++	route.RouteInit(app)
++
++	app.Listen(":8080")
++}
+Index: Backend/Medicine/utils/jwt.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/utils/jwt.go b/Backend/Medicine/utils/jwt.go
+new file mode 100644
+--- /dev/null	(date 1713758115021)
++++ b/Backend/Medicine/utils/jwt.go	(date 1713758115021)
+@@ -0,0 +1,50 @@
++package utils
++
++import (
++	"fmt"
++	"github.com/dgrijalva/jwt-go"
++)
++
++var SecretKey = "SECRET_TOKEN"
++
++func GenerateToken(claims jwt.Claims) (string, error) {
++
++	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
++	webToken, err := token.SignedString([]byte(SecretKey))
++	if err != nil {
++		return "", err
++	}
++
++	return webToken, nil
++}
++
++func VerifyToken(tokenString string) (*jwt.Token, error) {
++	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
++		if _, isValid := token.Method.(*jwt.SigningMethodHMAC); !isValid {
++			return nil, fmt.Errorf("unexpected signing method : %v", token.Header["alg"])
++		}
++
++		return []byte(SecretKey), nil
++	})
++
++	if err != nil {
++		return nil, err
++	}
++
++	return token, nil
++
++}
++
++func DecodeToken(tokenString string) (jwt.MapClaims, error) {
++	token, err := VerifyToken(tokenString)
++	if err != nil {
++		return nil, err
++	}
++
++	claims, isOK := token.Claims.(jwt.MapClaims)
++	if isOK && token.Valid {
++		return claims, nil
++	}
++
++	return nil, fmt.Errorf("invalid token")
++}
+Index: Backend/Medicine/utils/file.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/utils/file.go b/Backend/Medicine/utils/file.go
+new file mode 100644
+--- /dev/null	(date 1715701679315)
++++ b/Backend/Medicine/utils/file.go	(date 1715701679315)
+@@ -0,0 +1,12 @@
++package utils
++
++import (
++	"fmt"
++	"path/filepath"
++)
++
++func GenerateImageFile(filename string, ext string) string {
++	typ := filepath.Ext(ext)
++	filenames := fmt.Sprintf("Image_%s%s", filename, typ)
++	return filenames
++}
+Index: Backend/Medicine/utils/password.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/utils/password.go b/Backend/Medicine/utils/password.go
+new file mode 100644
+--- /dev/null	(date 1713758115021)
++++ b/Backend/Medicine/utils/password.go	(date 1713758115021)
+@@ -0,0 +1,17 @@
++package utils
++
++import "golang.org/x/crypto/bcrypt"
++
++func HashingPassword(password string) (string, error) {
++	hashedByte, err := bcrypt.GenerateFromPassword([]byte(password), 14)
++	if err != nil {
++		return "", err
++	}
++
++	return string(hashedByte), nil
++}
++
++func CheckPasswordHash(password, hashedPassword string) bool {
++	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
++	return err == nil
++}
+Index: Backend/Medicine/handler/madicine_handler.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/handler/madicine_handler.go b/Backend/Medicine/handler/madicine_handler.go
+new file mode 100644
+--- /dev/null	(date 1715762405218)
++++ b/Backend/Medicine/handler/madicine_handler.go	(date 1715762405218)
+@@ -0,0 +1,191 @@
++package handler
++
++import (
++	"github.com/go-playground/validator/v10"
++	"github.com/gofiber/fiber/v2"
++	"medicine/database"
++	"medicine/model/entity"
++	"medicine/utils"
++	"os"
++	"path/filepath"
++)
++
++var PathImageProduct = "./Public"
++
++func init() {
++	if _, err := os.Stat(PathImageProduct); os.IsNotExist(err) {
++		err := os.Mkdir(PathImageProduct, os.ModePerm)
++		if err != nil {
++			return
++		}
++	}
++}
++
++func MedicineGetAll(ctx *fiber.Ctx) error {
++	var medicines []entity.Medicine
++
++	database.DB.Find(&medicines)
++
++	// Create a slice to store the response data
++	response := make([]fiber.Map, len(medicines))
++
++	// Iterate through medicines and populate response with required fields
++	for i, medicine := range medicines {
++		response[i] = fiber.Map{
++			"id":      medicine.ID,
++			"name":    medicine.Name,
++			"amount":  medicine.Amount,
++			"expired": medicine.Expired,
++		}
++	}
++
++	return ctx.Status(200).JSON(fiber.Map{
++		"medicine": response,
++	})
++}
++
++func CreateMedicine(ctx *fiber.Ctx) error {
++	// Parse form data
++	input := new(entity.Medicine)
++	if err := ctx.BodyParser(input); err != nil {
++		return ctx.Status(400).JSON(fiber.Map{
++			"status":  "failed",
++			"message": "Invalid form data",
++		})
++	}
++
++	// Validate the input
++	validate := validator.New()
++	if err := validate.Struct(input); err != nil {
++		return ctx.Status(400).JSON(fiber.Map{
++			"status":  "failed",
++			"message": err.Error(),
++		})
++	}
++
++	// Process image
++	image, err := ctx.FormFile("image")
++	if err != nil {
++		return ctx.Status(400).JSON(fiber.Map{
++			"status":  "failed",
++			"message": "Image is required",
++		})
++	}
++
++	filename := utils.GenerateImageFile(input.Name, image.Filename)
++	if err := ctx.SaveFile(image, filepath.Join(PathImageProduct, filename)); err != nil {
++		return ctx.Status(500).JSON(fiber.Map{
++			"status":  "failed",
++			"message": "Can't save file image",
++		})
++	}
++	input.Image = filename
++
++	// Create the Medicine
++	if err := database.DB.Create(input).Error; err != nil {
++		return ctx.Status(500).JSON(fiber.Map{
++			"status":  "failed",
++			"message": "failed to store data",
++			"error":   err.Error(),
++		})
++	}
++
++	return ctx.Status(200).JSON(fiber.Map{
++		"status": "success",
++		"data":   input,
++	})
++}
++
++func UpdateMedicine(ctx *fiber.Ctx) error {
++	// Parse form data
++	input := new(entity.Medicine)
++	if err := ctx.BodyParser(input); err != nil {
++		return ctx.Status(400).JSON(fiber.Map{
++			"status":  "failed",
++			"message": "Invalid form data",
++		})
++	}
++
++	// Get medicine ID from URL
++	medicineID := ctx.Params("id")
++	var medicine entity.Medicine
++
++	// Find the existing medicine record
++	if err := database.DB.First(&medicine, "id = ?", medicineID).Error; err != nil {
++		return ctx.Status(404).JSON(fiber.Map{
++			"status":  "failed",
++			"message": "medicine not found",
++		})
++	}
++
++	// Update fields
++	if input.Name != "" {
++		medicine.Name = input.Name
++	}
++
++	if input.Amount != 0 {
++		medicine.Amount = input.Amount
++	}
++
++	if input.Expired != "" {
++		medicine.Expired = input.Expired
++	}
++
++	// Process image if provided
++	image, err := ctx.FormFile("image")
++	if err == nil {
++		filename := utils.GenerateImageFile(medicine.Name, image.Filename)
++		if err := ctx.SaveFile(image, filepath.Join(PathImageProduct, filename)); err != nil {
++			return ctx.Status(500).JSON(fiber.Map{
++				"status":  "failed",
++				"message": "Can't save file image",
++			})
++		}
++		medicine.Image = filename
++	}
++
++	// Validate the struct
++	validate := validator.New()
++	if err := validate.Struct(medicine); err != nil {
++		return ctx.Status(400).JSON(fiber.Map{
++			"status":  "failed",
++			"message": err.Error(),
++		})
++	}
++
++	// Update the medicine in the database
++	if err := database.DB.Save(&medicine).Error; err != nil {
++		return ctx.Status(500).JSON(fiber.Map{
++			"status":  "failed",
++			"message": "failed to update data",
++			"error":   err.Error(),
++		})
++	}
++
++	return ctx.Status(200).JSON(fiber.Map{
++		"status": "success",
++		"data":   medicine,
++	})
++}
++
++func DeleteMedicine(ctx *fiber.Ctx) error {
++	id := ctx.Params("id")
++
++	var medicine entity.Medicine
++
++	if err := database.DB.First(&medicine, id).Error; err != nil {
++		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{
++			"error": "medicine not found",
++		})
++	}
++
++	if err := database.DB.Delete(&medicine).Error; err != nil {
++		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
++			"message": "Failed to delete medicine",
++		})
++	}
++
++	return ctx.Status(200).JSON(fiber.Map{
++		"message": "Medicine deleted successfully",
++	})
++}
+Index: Backend/Medicine/middleware/middleware.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/middleware/middleware.go b/Backend/Medicine/middleware/middleware.go
+new file mode 100644
+--- /dev/null	(date 1715761558418)
++++ b/Backend/Medicine/middleware/middleware.go	(date 1715761558418)
+@@ -0,0 +1,40 @@
++package middleware
++
++import (
++	"github.com/gofiber/fiber/v2"
++	"medicine/utils"
++)
++
++var ActiveTokens = make(map[string]bool)
++
++func Auth(ctx *fiber.Ctx) error {
++
++	// Menerima token dari header Authorization
++	token := ctx.Get("Authorization")
++	if token == "" {
++		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
++			"message": "unauthenticated",
++		})
++	}
++
++	// Mendekode token untuk mendapatkan klaim
++	claims, err := utils.DecodeToken(token)
++	if err != nil {
++		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
++			"message": "unauthenticated err",
++		})
++	}
++
++	// Memeriksa apakah token ada dalam daftar token aktif
++	if _, ok := ActiveTokens[token]; !ok {
++		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
++			"message": "unauthenticated",
++		})
++	}
++
++	// Menyimpan informasi pengguna ke dalam konteks lokal
++	ctx.Locals("staffInfo", claims)
++
++	return ctx.Next()
++
++}
+Index: Backend/Medicine/middleware/middleware_staff..go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/middleware/middleware_staff..go b/Backend/Medicine/middleware/middleware_staff..go
+new file mode 100644
+--- /dev/null	(date 1715761558444)
++++ b/Backend/Medicine/middleware/middleware_staff..go	(date 1715761558444)
+@@ -0,0 +1,39 @@
++package middleware
++
++import (
++	"github.com/gofiber/fiber/v2"
++	"log"
++	"medicine/utils"
++)
++
++func StaffAuth(ctx *fiber.Ctx) error {
++	// membuat token
++	token := ctx.Get("Authorization")
++	if token == "" {
++		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
++			"message": "unauthenticated",
++		})
++	}
++
++	//_, err := utils.VerifyToken(token)
++	claims, err := utils.DecodeToken(token)
++	if err != nil {
++		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
++			"message": "unauthenticated err",
++		})
++	}
++
++	role := int(claims["role"].(float64))
++	log.Println(role)
++
++	if role != 1 && role != 2 {
++		return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{
++			"message": "forbidden access",
++		})
++	}
++
++	ctx.Locals("staffInfo", claims)
++
++	return ctx.Next()
++
++}
+Index: Backend/Medicine/go.sum
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=\r\ngithub.com/andybalholm/brotli v1.0.5/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=\r\ngithub.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=\r\ngithub.com/gabriel-vasile/mimetype v1.4.3/go.mod h1:d8uq/6HKRL6CGdk+aubisF/M5GcPfT7nKyLpA0lbSSk=\r\ngithub.com/go-playground/locales v0.14.1/go.mod h1:hxrqLVvrK65+Rwrd5Fc6F2O76J/NuW9t0sjnWqG1slY=\r\ngithub.com/go-playground/universal-translator v0.18.1/go.mod h1:xekY+UJKNuX9WP91TpwSH2VMlDf28Uj24BCp08ZFTUY=\r\ngithub.com/go-playground/validator/v10 v10.20.0/go.mod h1:dbuPbCMFw/DrkbEynArYaCwl3amGuJotoKCe95atGMM=\r\ngithub.com/go-sql-driver/mysql v1.7.0/go.mod h1:OXbVy3sEdcQ2Doequ6Z5BW6fXNQTmx+9S1MCJN5yJMI=\r\ngithub.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=\r\ngithub.com/gofiber/fiber/v2 v2.52.4/go.mod h1:KEOE+cXMhXG0zHc9d8+E38hoX+ZN7bhOtgeF2oT6jrQ=\r\ngithub.com/google/uuid v1.5.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=\r\ngithub.com/jinzhu/inflection v1.0.0/go.mod h1:h+uFLlag+Qp1Va5pdKtLDYj+kHp5pxUVkryuEj+Srlc=\r\ngithub.com/jinzhu/now v1.1.5/go.mod h1:d3SSVoowX0Lcu0IBviAWJpolVfI5UJVZZ7cO71lE/z8=\r\ngithub.com/klauspost/compress v1.17.0/go.mod h1:ntbaceVETuRiXiv4DpjP66DpAtAGkEQskQzEyD//IeE=\r\ngithub.com/leodido/go-urn v1.4.0/go.mod h1:bvxc+MVxLKB4z00jd1z+Dvzr47oO32F/QSNjSBOlFxI=\r\ngithub.com/mattn/go-colorable v0.1.13/go.mod h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=\r\ngithub.com/mattn/go-isatty v0.0.16/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/yFXSvRLM=\r\ngithub.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=\r\ngithub.com/mattn/go-runewidth v0.0.15/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=\r\ngithub.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=\r\ngithub.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=\r\ngithub.com/valyala/fasthttp v1.51.0/go.mod h1:oI2XroL+lI7vdXyYoQk03bXBThfFl2cVdIA3Xl7cH8g=\r\ngithub.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=\r\ngolang.org/x/crypto v0.19.0/go.mod h1:Iy9bg/ha4yyC70EfRS8jz+B6ybOBKMaSxLj6P6oBDfU=\r\ngolang.org/x/net v0.21.0/go.mod h1:bIjVDfnllIU7BJ2DNgfnXvpSvtn8VRwhlsaeUTyUS44=\r\ngolang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=\r\ngolang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=\r\ngolang.org/x/sys v0.17.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=\r\ngolang.org/x/text v0.14.0/go.mod h1:18ZOQIKpY8NJVqYksKHtTdi31H5itFRjB5/qKTNYzSU=\r\ngorm.io/driver/mysql v1.5.6/go.mod h1:sEtPWMiqiN1N1cMXoXmBbd8C6/l+TESwriotuRRpkDM=\r\ngorm.io/gorm v1.25.7/go.mod h1:hbnx/Oo0ChWMn1BIhpy1oYozzpM15i4YPuHDmfYtwg8=\r\ngorm.io/gorm v1.25.10/go.mod h1:hbnx/Oo0ChWMn1BIhpy1oYozzpM15i4YPuHDmfYtwg8=\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/go.sum b/Backend/Medicine/go.sum
+--- a/Backend/Medicine/go.sum	(revision 97d8dc84af97c2cb40044912cde33c7fe5be2f0e)
++++ b/Backend/Medicine/go.sum	(date 1715762708557)
+@@ -1,32 +1,59 @@
++filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
+ filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
++github.com/andybalholm/brotli v1.0.5 h1:8uQZIdzKmjc/iuPu7O2ioW48L81FgatrcpfFmiq/cCs=
+ github.com/andybalholm/brotli v1.0.5/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
++github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
+ github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
++github.com/gabriel-vasile/mimetype v1.4.3 h1:in2uUcidCuFcDKtdcBxlR0rJ1+fsokWf+uqxgUFjbI0=
+ github.com/gabriel-vasile/mimetype v1.4.3/go.mod h1:d8uq/6HKRL6CGdk+aubisF/M5GcPfT7nKyLpA0lbSSk=
++github.com/go-playground/locales v0.14.1 h1:EWaQ/wswjilfKLTECiXz7Rh+3BjFhfDFKv/oXslEjJA=
+ github.com/go-playground/locales v0.14.1/go.mod h1:hxrqLVvrK65+Rwrd5Fc6F2O76J/NuW9t0sjnWqG1slY=
++github.com/go-playground/universal-translator v0.18.1 h1:Bcnm0ZwsGyWbCzImXv+pAJnYK9S473LQFuzCbDbfSFY=
+ github.com/go-playground/universal-translator v0.18.1/go.mod h1:xekY+UJKNuX9WP91TpwSH2VMlDf28Uj24BCp08ZFTUY=
++github.com/go-playground/validator/v10 v10.20.0 h1:K9ISHbSaI0lyB2eWMPJo+kOS/FBExVwjEviJTixqxL8=
+ github.com/go-playground/validator/v10 v10.20.0/go.mod h1:dbuPbCMFw/DrkbEynArYaCwl3amGuJotoKCe95atGMM=
+ github.com/go-sql-driver/mysql v1.7.0/go.mod h1:OXbVy3sEdcQ2Doequ6Z5BW6fXNQTmx+9S1MCJN5yJMI=
++github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpvNJ1Y=
+ github.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=
++github.com/gofiber/fiber/v2 v2.52.4 h1:P+T+4iK7VaqUsq2PALYEfBBo6bJZ4q3FP8cZ84EggTM=
+ github.com/gofiber/fiber/v2 v2.52.4/go.mod h1:KEOE+cXMhXG0zHc9d8+E38hoX+ZN7bhOtgeF2oT6jrQ=
++github.com/google/uuid v1.5.0 h1:1p67kYwdtXjb0gL0BPiP1Av9wiZPo5A8z2cWkTZ+eyU=
+ github.com/google/uuid v1.5.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
++github.com/jinzhu/inflection v1.0.0 h1:K317FqzuhWc8YvSVlFMCCUb36O/S9MCKRDI7QkRKD/E=
+ github.com/jinzhu/inflection v1.0.0/go.mod h1:h+uFLlag+Qp1Va5pdKtLDYj+kHp5pxUVkryuEj+Srlc=
++github.com/jinzhu/now v1.1.5 h1:/o9tlHleP7gOFmsnYNz3RGnqzefHA47wQpKrrdTIwXQ=
+ github.com/jinzhu/now v1.1.5/go.mod h1:d3SSVoowX0Lcu0IBviAWJpolVfI5UJVZZ7cO71lE/z8=
++github.com/klauspost/compress v1.17.0 h1:Rnbp4K9EjcDuVuHtd0dgA4qNuv9yKDYKK1ulpJwgrqM=
+ github.com/klauspost/compress v1.17.0/go.mod h1:ntbaceVETuRiXiv4DpjP66DpAtAGkEQskQzEyD//IeE=
++github.com/leodido/go-urn v1.4.0 h1:WT9HwE9SGECu3lg4d/dIA+jxlljEa1/ffXKmRjqdmIQ=
+ github.com/leodido/go-urn v1.4.0/go.mod h1:bvxc+MVxLKB4z00jd1z+Dvzr47oO32F/QSNjSBOlFxI=
++github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
+ github.com/mattn/go-colorable v0.1.13/go.mod h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=
+ github.com/mattn/go-isatty v0.0.16/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/yFXSvRLM=
++github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
+ github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
++github.com/mattn/go-runewidth v0.0.15 h1:UNAjwbU9l54TA3KzvqLGxwWjHmMgBUVhBiTjelZgg3U=
+ github.com/mattn/go-runewidth v0.0.15/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
++github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
+ github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
++github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
+ github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
++github.com/valyala/fasthttp v1.51.0 h1:8b30A5JlZ6C7AS81RsWjYMQmrZG6feChmgAolCl1SqA=
+ github.com/valyala/fasthttp v1.51.0/go.mod h1:oI2XroL+lI7vdXyYoQk03bXBThfFl2cVdIA3Xl7cH8g=
++github.com/valyala/tcplisten v1.0.0 h1:rBHj/Xf+E1tRGZyWIWwJDiRY0zc1Js+CV5DqwacVSA8=
+ github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
++golang.org/x/crypto v0.19.0 h1:ENy+Az/9Y1vSrlrvBSyna3PITt4tiZLf7sgCjZBX7Wo=
+ golang.org/x/crypto v0.19.0/go.mod h1:Iy9bg/ha4yyC70EfRS8jz+B6ybOBKMaSxLj6P6oBDfU=
++golang.org/x/net v0.21.0 h1:AQyQV4dYCvJ7vGmJyKki9+PBdyvhkSd8EIx/qb0AYv4=
+ golang.org/x/net v0.21.0/go.mod h1:bIjVDfnllIU7BJ2DNgfnXvpSvtn8VRwhlsaeUTyUS44=
+ golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+ golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
++golang.org/x/sys v0.17.0 h1:25cE3gD+tdBA7lp7QfhuV+rJiE9YXTcS3VG1SqssI/Y=
+ golang.org/x/sys v0.17.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
++golang.org/x/text v0.14.0 h1:ScX5w1eTa3QqT8oi6+ziP7dTV1S2+ALU0bI+0zXKWiQ=
+ golang.org/x/text v0.14.0/go.mod h1:18ZOQIKpY8NJVqYksKHtTdi31H5itFRjB5/qKTNYzSU=
++gorm.io/driver/mysql v1.5.6 h1:Ld4mkIickM+EliaQZQx3uOJDJHtrd70MxAUqWqlx3Y8=
+ gorm.io/driver/mysql v1.5.6/go.mod h1:sEtPWMiqiN1N1cMXoXmBbd8C6/l+TESwriotuRRpkDM=
+ gorm.io/gorm v1.25.7/go.mod h1:hbnx/Oo0ChWMn1BIhpy1oYozzpM15i4YPuHDmfYtwg8=
++gorm.io/gorm v1.25.10 h1:dQpO+33KalOA+aFYGlK+EfxcI5MbO7EP2yYygwh9h+s=
+ gorm.io/gorm v1.25.10/go.mod h1:hbnx/Oo0ChWMn1BIhpy1oYozzpM15i4YPuHDmfYtwg8=
+Index: Backend/Medicine/model/entity/medicine.entity.go
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Backend/Medicine/model/entity/medicine.entity.go b/Backend/Medicine/model/entity/medicine.entity.go
+new file mode 100644
+--- /dev/null	(date 1715761558436)
++++ b/Backend/Medicine/model/entity/medicine.entity.go	(date 1715761558436)
+@@ -0,0 +1,21 @@
++package entity
++
++import (
++	"gorm.io/gorm"
++	"time"
++)
++
++type Medicine struct {
++	ID        uint           `json:"id" gorm:"primaryKey;AUTO_INCREMENT"`
++	Name      string         `json:"name" validate:"required"`
++	Amount    int            `json:"amount" validate:"required"`
++	Expired   string         `json:"expired" validate:"required"`
++	Image     string         `json:"image"`
++	CreatedAt time.Time      `json:"created_at"`
++	UpdatedAt time.Time      `json:"updated_at"`
++	DeletedAt gorm.DeletedAt `json:"-" gorm:"index,column:deleted_at"`
++}
++
++func (m *Medicine) TableName() string {
++	return "medicines"
++}
