@@ -5,27 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5327c029-4162-41bf-bd62-214c70ad4a1f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config/index.config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/database.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migration/migration.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handler/madicine_handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middleware/middleware.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middleware/middleware_staff..go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model/entity/medicine.entity.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model/request/auth.request.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/response/response.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/route/index.route.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/file.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/jwt.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/password.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Appointment/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/../Appointment/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Appointment/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/../Appointment/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Appointment/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../Appointment/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/route/index.route.go" beforeDir="false" afterPath="$PROJECT_DIR$/route/index.route.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Staff/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../Staff/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +42,7 @@
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "D:/Kuliah/Pengembangan Aplikasi Terdistribusi/Proyek/del-clinic-microservices/Backend/Staff",
+    "last_opened_file_path": "D:/Kuliah/Pengembangan Aplikasi Terdistribusi/Proyek/del-clinic-microservices/Backend/Medicine",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"
