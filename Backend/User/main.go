@@ -4,9 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"log"
-	"user/database"
-	"user/database/migration"
-	"user/routes"
+	"service/user/database"
+	"service/user/database/migration"
+	"service/user/routes"
 )
 
 func main() {

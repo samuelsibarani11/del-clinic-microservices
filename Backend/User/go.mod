@@ -1,4 +1,4 @@
-module user
+module service/user
 
 go 1.21.5
 

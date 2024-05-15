@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"user/utils"
+	"service/user/utils"
 )
 
 var ActiveTokens = make(map[string]bool)
@@ -22,13 +22,6 @@ func Auth(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "unauthenticated err",
-		})
-	}
-
-	// Memeriksa apakah token ada dalam daftar token aktif
-	if _, ok := ActiveTokens[token]; !ok {
-		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "unauthenticated",
 		})
 	}
 

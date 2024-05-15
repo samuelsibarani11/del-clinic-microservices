@@ -3,8 +3,8 @@ package migration
 import (
 	"fmt"
 	"log"
-	"user/database"
-	"user/models/entity"
+	"service/user/database"
+	"service/user/models/entity"
 )
 
 func Migration() {
