@@ -4,10 +4,95 @@ import (
 	"appointment/database"
 	"appointment/model/entity"
 	"appointment/utils"
+	"encoding/json"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
-
 	"log"
+	"net/http"
+	staff "staff/models/entity"
+	user "user/Models/entity"
 )
+
+func getStaffByID(staffID int) (*staff.Staff, error) {
+	resp, err := http.Get(fmt.Sprintf("http://172.20.10.4:8003/user/%d", staffID))
+	if err != nil {
+		return nil, fmt.Errorf("failed to make HTTP request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("HTTP request failed with status code: %d", resp.StatusCode)
+	}
+
+	var staff staff.Staff
+	if err := json.NewDecoder(resp.Body).Decode(&staff); err != nil {
+		return nil, fmt.Errorf("failed to decode JSON response: %v", err)
+	}
+
+	return &staff, nil
+}
+
+func getUserByID(userID int) (*user.User, error) {
+	resp, err := http.Get(fmt.Sprintf("http://172.20.10.4:8003/user/%d", userID))
+	if err != nil {
+		return nil, fmt.Errorf("failed to make HTTP request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("HTTP request failed with status code: %d", resp.StatusCode)
+	}
+
+	var user user.User
+	if err := json.NewDecoder(resp.Body).Decode(&user); err != nil {
+		return nil, fmt.Errorf("failed to decode JSON response: %v", err)
+	}
+
+	return &user, nil
+}
+
+func CreateAppointment(ctx *fiber.Ctx) error {
+	appointment := new(entity.AppointmentResponse)
+
+	//PARSE TO OBJECT STRUCT
+	if err := ctx.BodyParser(appointment); err != nil {
+		return ctx.Status(503).JSON(fiber.Map{
+			"err": err,
+		})
+	}
+	userId := appointment.RequestedID
+
+	id, err := getUserByID(int(userId))
+	if err != nil {
+		return ctx.Status(400).JSON(fiber.Map{
+			"status":  "failed",
+			"message": err.Error(),
+		})
+	}
+
+	id.requestedId = userId
+
+	appointmentData := entity.Appointment{
+		ID:          appointment.ID,
+		Complaint:   appointment.Complaint,
+		RequestedID: userId,
+		Time:        appointment.Time,
+		Date:        appointment.Date,
+	}
+
+	if err := database.DB.Create(&appointmentData).Error; err != nil {
+		// Mengembalikan respon error 500 dengan pesan yang sesuai
+		return ctx.Status(500).JSON(fiber.Map{
+			"message": "failed to store data",
+			"error":   err.Error(), // Menambahkan pesan error ke respon JSON
+		})
+	}
+
+	return ctx.Status(200).JSON(fiber.Map{
+		"message":     "create data successfully",
+		"appointment": appointment,
+	})
+}
 
 func AppointmentGetByAuth(ctx *fiber.Ctx) error {
 	// Mendapatkan token dari header Authorization
@@ -47,7 +132,7 @@ func AppointmentGetByAuth(ctx *fiber.Ctx) error {
 			"date":      appointment.Date,
 			"time":      appointment.Time,
 			"complaint": appointment.Complaint,
-			"approved":  appointment.Approved,
+			"approved":  appointment.ApprovedID,
 		}
 		responseAppointments = append(responseAppointments, responseAppointment)
 	}
@@ -73,38 +158,6 @@ func AppointmentGetAll(ctx *fiber.Ctx) error {
 	return ctx.Status(200).JSON(fiber.Map{
 		"success":      "get data success",
 		"appointments": appointments,
-	})
-}
-
-func CreateAppointment(ctx *fiber.Ctx) error {
-	appointment := new(entity.AppointmentResponse)
-
-	//PARSE TO OBJECT STRUCT
-	if err := ctx.BodyParser(appointment); err != nil {
-		return ctx.Status(503).JSON(fiber.Map{
-			"err": err,
-		})
-	}
-
-	// VALIDATION
-	//log.Println(appointment.RequestedID)
-	if appointment.RequestedID == 0 {
-		return ctx.Status(400).JSON(fiber.Map{
-			"err": "requested_id is required",
-		})
-	}
-
-	if err := database.DB.Create(&appointment).Error; err != nil {
-		// Mengembalikan respon error 500 dengan pesan yang sesuai
-		return ctx.Status(500).JSON(fiber.Map{
-			"message": "failed to store data",
-			"error":   err.Error(), // Menambahkan pesan error ke respon JSON
-		})
-	}
-
-	return ctx.Status(200).JSON(fiber.Map{
-		"message":     "create data successfully",
-		"appointment": appointment,
 	})
 }
 

@@ -12,8 +12,6 @@ type Appointment struct {
 	Complaint   string         `json:"complaint" form:"complaint"`
 	ApprovedID  *uint          `json:"approved_id" gorm:"default:null"` // Changed to *uint and allow null
 	RequestedID uint           `json:"requested_id" form:"requested_id"`
-	Approved    uint           `json:"approved" gorm:"default:null"` // Set the constraint behavior
-	Requested   uint           `json:"requested"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index,column:deleted_at"`

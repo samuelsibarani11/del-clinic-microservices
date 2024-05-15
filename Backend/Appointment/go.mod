@@ -26,3 +26,7 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 )
+
+replace appointment => ../staff
+
+replace user => ../appointment
